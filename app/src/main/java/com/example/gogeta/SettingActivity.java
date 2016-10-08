@@ -18,10 +18,10 @@ public class SettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @Bind(R.id.pemesanan)
+    Button pesan;
     @Bind(R.id.history)
     Button hist;
-    @Bind(R.id.menu)
-    Button sett;
 
     @OnClick(R.id.history)
     public void change(){
@@ -29,10 +29,11 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(sebuahIntent);
     }
 
-    @OnClick(R.id.menu)
+    @OnClick(R.id.pemesanan)
     public void change2(){
         Intent sebuahIntent = new Intent(this,Main2Activity.class);
         startActivity(sebuahIntent);
     }
+
 
 }

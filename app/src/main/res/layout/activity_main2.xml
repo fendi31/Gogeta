@@ -12,41 +12,39 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/birumuda">
-        <TextView
+        android:background="@color/background_splash">
+        <ImageView android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gogeta"
-            android:textSize="30sp"
+            android:src="@mipmap/logo"
             android:layout_centerInParent="true"
-            android:textColor="@color/putih"
             />
+
     </RelativeLayout>
 
     <LinearLayout android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="60sp"
-        android:background="@color/birumuda">
+        android:background="@color/background_splash">
         <Button android:id="@+id/pemesanan"
 
             android:text="Home"
             android:textColor="@color/putih"
-
-            android:background="@color/birumuda"
+            android:background="@color/background_splash"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_width="wrap_content" />
         <Button android:id="@+id/history"
             android:text="History"
             android:textColor="@color/putih"
-            android:background="@color/birumuda"
+            android:background="@color/background_splash"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_width="wrap_content" />
         <Button android:id="@+id/setting"
             android:text="Setting"
             android:textColor="@color/putih"
-            android:background="@color/birumuda"
+            android:background="@color/background_splash"
             android:layout_weight="1"
             android:layout_height="match_parent"
 
