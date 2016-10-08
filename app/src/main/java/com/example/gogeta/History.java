@@ -13,12 +13,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.gogeta.R.layout.activity_history;
+import static com.example.gogeta.R.layout.activity_main;
+
 public class History extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        //setContentView(activity_main2);
+        ButterKnife.setDebug(true);
         ButterKnife.bind(this);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
       //  setSupportActionBar(toolbar);
@@ -36,6 +40,7 @@ public class History extends AppCompatActivity {
 
     @Bind(R.id.menu)
     Button hist;
+
     @Bind(R.id.setting)
     Button sett;
 

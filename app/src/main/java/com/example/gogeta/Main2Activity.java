@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.Bind;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.example.gogeta.R.layout.activity_main2;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -21,7 +24,7 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(activity_main2);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //       setSupportActionBar(toolbar);
         ButterKnife.bind(this);
