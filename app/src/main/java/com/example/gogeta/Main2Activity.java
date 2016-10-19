@@ -7,8 +7,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 
@@ -19,6 +23,7 @@ import static com.example.gogeta.R.layout.activity_main2;
 
 
 public class Main2Activity extends AppCompatActivity {
+    private Spinner spinner1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,11 @@ public class Main2Activity extends AppCompatActivity {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //       setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
+        //String[] items = new String[]{"1", "2", "three"};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        //dropdown.setAdapter(adapter);
+
     };
         /** FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -54,4 +64,32 @@ public class Main2Activity extends AppCompatActivity {
             startActivity(sebuahIntent);
         }
 
+        public void addListenerOnSpinnerItemSelection() {
+            spinner1 = (Spinner) findViewById(R.id.spinner1);
+            spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+        }
+
+    // get the selected dropdown list value
+    public void addListenerOnButton() {
+
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+
+
+
+        };
+
+/**
+    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
+                    Toast.LENGTH_SHORT).show();
+        }
+**/
+
     }
+
+
+
+
