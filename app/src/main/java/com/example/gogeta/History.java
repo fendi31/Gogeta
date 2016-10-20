@@ -38,6 +38,7 @@ public class History extends AppCompatActivity {
     }); **/
     @Bind(R.id.pemesanan)
     Button pesan;
+
     @Bind(R.id.setting)
     Button sett;
 
@@ -49,7 +50,7 @@ public class History extends AppCompatActivity {
 
     @OnClick(R.id.setting)
     public void change2(){
-        Intent sebuahIntent = new Intent(this,SettingActivity.class);
+        Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
         startActivity(sebuahIntent);
     }
 

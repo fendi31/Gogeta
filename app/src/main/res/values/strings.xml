@@ -71,5 +71,6 @@
         <item>180</item>
 
     </string-array>
+    <string name="title_activity_melihat_pemesanan">MelihatPemesanan</string>
 
 </resources>
