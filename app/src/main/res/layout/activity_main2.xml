@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/btn_dropdown"
                         android:spinnerMode="dropdown"
-                        android:entries="@array/country_arrays"
+                        android:entries="@array/jenjang"
                         android:prompt="@string/country_prompt"
                         />
                 </LinearLayout>
@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/btn_dropdown"
                         android:spinnerMode="dropdown"
-                        android:entries="@array/country_arrays"
+                        android:entries="@array/kelas"
                         android:prompt="@string/country_prompt"
                         />
                 </LinearLayout>
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/btn_dropdown"
                         android:spinnerMode="dropdown"
-                        android:entries="@array/country_arrays"
+                        android:entries="@array/pelajaran"
                         android:prompt="@string/country_prompt"
                         />
                 </LinearLayout>
@@ -163,14 +163,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Topik"/>
-                    <Spinner
-                        android:id="@+id/spinner3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:drawable/btn_dropdown"
-                        android:spinnerMode="dropdown"
-                        android:entries="@array/country_arrays"
-                        android:prompt="@string/country_prompt"
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColorHint="@color/birumuda"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1"
                         />
                 </LinearLayout>
             </LinearLayout>

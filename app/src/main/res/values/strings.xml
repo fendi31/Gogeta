@@ -31,4 +31,45 @@
         <item>India</item>
     </string-array>
 
+    <string-array name="jenjang">
+        <item>SD</item>
+        <item>SMP</item>
+        <item>SMA</item>
+        <item>Kuliah</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <string-array name="kelas">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="pelajaran">
+        <item>Matematika</item>
+        <item>Kimia</item>
+        <item>Fisika</item>
+        <item>Biologi</item>
+        <item>Akuntansi</item>
+        <item>Geografi</item>
+        <item>Sosiologi</item>
+        <item>Sejarah</item>
+        <item>Komputer</item>
+        <item>PPKN</item>
+    </string-array>
+
+
+    <string-array name="durasi">
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+        <item>150</item>
+        <item>180</item>
+
+    </string-array>
+
 </resources>
