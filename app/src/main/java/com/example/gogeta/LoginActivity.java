@@ -31,6 +31,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +54,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -204,8 +213,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-            Intent sebuahIntent = new Intent(this,Main2Activity.class);
-            startActivity(sebuahIntent);
+
+//            Intent sebuahIntent = new Intent(this,Main2Activity.class);
+//            startActivity(sebuahIntent);
 
         }
     }
@@ -328,19 +338,113 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+//            try {
+//                // Simulate network access.
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return false;
+//            }
+//
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
+
+            /************ Make Post Call To Web Server ***********/
+            BufferedReader reader=null;
+            String data ="";
+            String Content;
+            // Send data
+            try
+            {
+                String host = "10.5.95.161";
+                String urlString = "http://"+host+"/tekmob/?email="+mEmail+"&password="+mPassword;
+                // Defined URL  where to send data
+                URL url = new URL(urlString);
+
+                // Send POST data request
+
+                URLConnection conn = url.openConnection();
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                // Get the server response
+
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while((line = reader.readLine()) != null)
+                {
+                    // Append server response in string
+                    sb.append(line + "\n");
+                }
+
+                // Append Server Response To Content String
+                Content = sb.toString();
+            }
+            catch(Exception ex)
+            {
                 return false;
             }
+            finally
+            {
+                try
+                {
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    reader.close();
                 }
+
+                catch(Exception ex) {}
+            }
+
+            /*****************************************************/
+
+
+            /****************** Start Parse Response JSON Data *************/
+//            String OutputData = "";
+            JSONObject jsonResponse;
+
+
+            try {
+
+                /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
+                jsonResponse = new JSONObject(Content);
+
+                /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
+                /*******  Returns null otherwise.  *******/
+                JSONArray jsonMainNode = jsonResponse.optJSONArray("Android");
+
+                /*********** Process each JSON Node ************/
+
+                int lengthJsonArr = jsonMainNode.length();
+
+                String status="";
+                for(int i=0; i < lengthJsonArr; i++)
+                {
+                    /****** Get Object for each JSON node.***********/
+                    JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+
+                    /******* Fetch node values **********/
+                    status       = jsonChildNode.optString("status").toString();
+//                    String nama     = jsonChildNode.optString("nama").toString();
+
+                }
+                /****************** End Parse Response JSON Data *************/
+
+                //Show Parsed Output on screen (activity)
+                return (status.equals("true")? true:false);
+//                return false;
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
             }
 
             // TODO: register the new account here.
@@ -354,6 +458,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
+                berhasilLogin();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -365,6 +470,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private void berhasilLogin() {
+        Intent sebuahIntent = new Intent(this,Main2Activity.class);
+        startActivity(sebuahIntent);
     }
 }
 
