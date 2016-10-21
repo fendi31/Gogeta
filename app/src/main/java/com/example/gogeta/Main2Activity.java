@@ -10,9 +10,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 
 import butterknife.Bind;
 
@@ -30,29 +37,36 @@ public class Main2Activity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(activity_main2);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //       setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
-        //String[] items = new String[]{"1", "2", "three"};
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        //dropdown.setAdapter(adapter);
 
     };
-        /** FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        }); **/
+
         @Bind(R.id.history)
         Button hist;
         @Bind(R.id.setting)
         Button sett;
+        @Bind(R.id.tombolsubmit)
+        Button subm;
+        @Bind(R.id.test)
+        TextView test;
+        @Bind(R.id.spinner1)
+        Spinner spinner1atext;
+        @Bind(R.id.spinner1b)
+        Spinner spinner1btext;
+        @Bind(R.id.spinner2)
+        Spinner spinner2text;
+        @Bind(R.id.edittetx3)
+        EditText edittext3text;
+        @Bind(R.id.spinner4)
+        Spinner spinner4text;
+        @Bind(R.id.edittext5)
+        EditText edittext5text;
+        @Bind(R.id.edittext6)
+        EditText edittext6text;
 
-        @OnClick(R.id.history)
+
+    @OnClick(R.id.history)
         public void change(){
             Intent sebuahIntent = new Intent(this,History.class);
             startActivity(sebuahIntent);
@@ -63,32 +77,66 @@ public class Main2Activity extends AppCompatActivity {
             Intent sebuahIntent = new Intent(this,SettingActivity.class);
             startActivity(sebuahIntent);
         }
-
-        public void addListenerOnSpinnerItemSelection() {
-            spinner1 = (Spinner) findViewById(R.id.spinner1);
-            spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-        }
-
-    // get the selected dropdown list value
-    public void addListenerOnButton() {
-
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-
-
-
-        };
+    String jenjang;
+    String kelas;
+    String pelajaran;
+    String topik;
+    String durasi;
+    String catatan;
+    String harga;
 
 /**
-    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+    @OnClick(R.id.tombolsubmit)
+    public void submit() {
+        //Spinner mySpinner=(Spinner) findViewById(R.id.spinner1);
+        text = spinner1atext.getSelectedItem().toString();
 
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Toast.makeText(parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(),
-                    Toast.LENGTH_SHORT).show();
-        }
+
+        test.setText(text);
+    }
 **/
 
+/**
+    @OnClick(R.id.login)
+    public void submit() {
+
+        BufferedReader reader = null;
+        String data = "";
+        String Content;
+
+        // Send data
+        try {
+            String host = "10.5.95.161";
+            String urlString = "http://" + host + "/tekmob/?email=" + mEmail + "&password=" + mPassword;
+            // Defined URL  where to send data
+            URL url = new URL(urlString);
+
+            // Send POST data request
+
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+
+        } catch (Exception ex) {
+            return ;
+        } finally {
+            try {
+
+                reader.close();
+            } catch (Exception ex) {
+            }
+        }
+
+
+
+
     }
+
+**/
+}
 
 
 

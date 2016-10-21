@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
+        <TextView android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Request guru"
@@ -163,7 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Topik"/>
-                    <EditText
+                    <EditText android:id="@+id/edittetx3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColorHint="@color/birumuda"
@@ -197,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/btn_dropdown"
                         android:spinnerMode="dropdown"
-                        android:entries="@array/country_arrays"
+                        android:entries="@array/durasi"
                         android:prompt="@string/country_prompt"
                         />
                 </LinearLayout>
@@ -227,7 +227,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Catatan Tambahan"/>
-                    <EditText
+                    <EditText android:id="@+id/edittext5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textColorHint="@color/birumuda"
@@ -242,12 +242,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <TextView
+                    android:layout_width="30sp"
+                    android:layout_height="match_parent"
+                    android:text="icon"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Harga"/>
+                    <EditText android:id="@+id/edittext6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColorHint="@color/birumuda"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <Button
+                    <Button android:id="@+id/tombolsubmit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/birumuda"
