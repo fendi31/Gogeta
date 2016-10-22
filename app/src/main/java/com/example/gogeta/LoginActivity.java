@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,6 +90,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    String roleUser = "";
+    String emailUser = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,8 +365,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Send data
             try
             {
-                String host = "10.5.95.161";
-                String urlString = "http://"+host+"/tekmob/?email="+mEmail+"&password="+mPassword;
+                String host = "10.5.93.73:8080";
+                String urlString = "http://"+host+"/user/check?email="+mEmail+"&password="+mPassword;
                 // Defined URL  where to send data
                 URL url = new URL(urlString);
 
@@ -393,6 +396,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             catch(Exception ex)
             {
+                Log.d("Error", ex.toString());
                 return false;
             }
             finally
@@ -435,7 +439,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     /******* Fetch node values **********/
                     status       = jsonChildNode.optString("status").toString();
-//                    String nama     = jsonChildNode.optString("nama").toString();
+                    roleUser        = jsonChildNode.optString("role").toString();
+                    emailUser        = jsonChildNode.optString("email").toString();
 
                 }
                 /****************** End Parse Response JSON Data *************/
@@ -478,6 +483,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         Editor editor = pref.edit();
         editor.putBoolean("isLogged", true); // Storing boolean - true/false
+        editor.putString("emailUser", emailUser); // Storing boolean - true/false
+        editor.putString("roleUser", roleUser); // Storing boolean - true/false
         editor.commit();
 
         Intent sebuahIntent = new Intent(this,Main2Activity.class);

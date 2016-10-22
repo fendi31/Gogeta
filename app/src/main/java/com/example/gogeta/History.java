@@ -7,7 +7,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -27,6 +29,10 @@ public class History extends AppCompatActivity {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //       setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        String[] StringArray = {"Pemesanan : ", "Nomor Telepon", "Jenjang", "Topik", "Durasi"};
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.item_list,StringArray);
+        ListView listView = (ListView) findViewById(R.id.history_progress);
+        listView.setAdapter(adapter);
     };
     /** FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
      fab.setOnClickListener(new View.OnClickListener() {

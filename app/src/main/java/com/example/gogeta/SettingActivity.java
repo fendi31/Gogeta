@@ -1,6 +1,7 @@
 package com.example.gogeta;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -22,6 +23,8 @@ public class SettingActivity extends AppCompatActivity {
     Button pesan;
     @Bind(R.id.history)
     Button hist;
+    @Bind(R.id.logout)
+    Button logout;
 
     @OnClick(R.id.history)
     public void change(){
@@ -35,5 +38,13 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(sebuahIntent);
     }
 
-
+    @OnClick(R.id.logout)
+    public void logout(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("isLogged", false); // Storing boolean - true/false
+        editor.commit();
+        Intent sebuahIntent = new Intent(this,LoginActivity.class);
+        startActivity(sebuahIntent);
+    }
 }
