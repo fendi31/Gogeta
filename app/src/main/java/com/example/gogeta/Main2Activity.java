@@ -65,6 +65,14 @@ public class Main2Activity extends AppCompatActivity {
         @Bind(R.id.edittext6)
         EditText edittext6text;
 
+        String jenjang;
+        String kelas;
+        String pelajaran;
+        String topik;
+        String durasi;
+        String catatan;
+        String harga;
+
 
     @OnClick(R.id.history)
         public void change(){
@@ -77,13 +85,6 @@ public class Main2Activity extends AppCompatActivity {
             Intent sebuahIntent = new Intent(this,SettingActivity.class);
             startActivity(sebuahIntent);
         }
-    String jenjang;
-    String kelas;
-    String pelajaran;
-    String topik;
-    String durasi;
-    String catatan;
-    String harga;
 
 /**
     @OnClick(R.id.tombolsubmit)
@@ -96,9 +97,17 @@ public class Main2Activity extends AppCompatActivity {
     }
 **/
 
-/**
+
     @OnClick(R.id.login)
     public void submit() {
+
+        jenjang = spinner1atext.getSelectedItem().toString();
+        kelas = spinner1btext.getSelectedItem().toString();
+        pelajaran = spinner2text.getSelectedItem().toString();
+        topik = edittext3text.getText().toString();
+        durasi = spinner4text.getSelectedItem().toString();
+        catatan = edittext5text.getText().toString();
+        harga = edittext6text.getText().toString();
 
         BufferedReader reader = null;
         String data = "";
@@ -107,7 +116,7 @@ public class Main2Activity extends AppCompatActivity {
         // Send data
         try {
             String host = "10.5.95.161";
-            String urlString = "http://" + host + "/tekmob/?email=" + mEmail + "&password=" + mPassword;
+            String urlString = "http://" + host + "/tekmob/?jenjang=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  + "&harga=" + harga;
             // Defined URL  where to send data
             URL url = new URL(urlString);
 
@@ -135,7 +144,7 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
-**/
+
 }
 
 
