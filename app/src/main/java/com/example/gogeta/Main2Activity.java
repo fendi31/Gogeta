@@ -65,6 +65,7 @@ public class Main2Activity extends AppCompatActivity {
         @Bind(R.id.edittext6)
         EditText edittext6text;
 
+
         String jenjang;
         String kelas;
         String pelajaran;
@@ -98,8 +99,9 @@ public class Main2Activity extends AppCompatActivity {
 **/
 
 
-    @OnClick(R.id.login)
+    @OnClick(R.id.tombolsubmit)
     public void submit() {
+
 
         jenjang = spinner1atext.getSelectedItem().toString();
         kelas = spinner1btext.getSelectedItem().toString();
