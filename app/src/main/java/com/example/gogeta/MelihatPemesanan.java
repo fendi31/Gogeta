@@ -61,7 +61,7 @@ public class MelihatPemesanan extends AppCompatActivity {
 
 
         // WebServer Request URL
-        String serverURL = "http://192.168.137.211:8080/pemesanan/guru";
+        String serverURL = "http://10.5.93.73:8080/pemesanan/guru";
 
         // Use AsyncTask execute Method To Prevent ANR Problem
         new LongOperation().execute(serverURL);

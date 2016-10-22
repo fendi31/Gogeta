@@ -1,6 +1,7 @@
 package com.example.gogeta;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,6 +38,17 @@ public class Main2Activity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(activity_main2);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+//        Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
+//        startActivity(sebuahIntent);
+        if(pref.getString("roleUser", "").equals("guru")){
+            finish();
+            Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
+            startActivity(sebuahIntent);
+        }
+
         ButterKnife.bind(this);
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
 
