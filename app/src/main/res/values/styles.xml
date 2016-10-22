@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">

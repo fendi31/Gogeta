@@ -8,6 +8,7 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +58,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -483,7 +485,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void berhasilLogin() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        Editor editor = pref.edit();
+        Editor editor = pref.edit();;
         editor.putBoolean("isLogged", true); // Storing boolean - true/false
         editor.putString("emailUser", emailUser); // Storing boolean - true/false
         editor.putString("roleUser", roleUser); // Storing boolean - true/false
@@ -491,6 +493,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Intent sebuahIntent = new Intent(this,Main2Activity.class);
         startActivity(sebuahIntent);
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }
 

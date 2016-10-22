@@ -3,6 +3,7 @@ package com.example.gogeta;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -89,12 +90,14 @@ public class Main2Activity extends AppCompatActivity {
 
     @OnClick(R.id.history)
         public void change(){
+            finish();
             Intent sebuahIntent = new Intent(this,History.class);
             startActivity(sebuahIntent);
         }
 
         @OnClick(R.id.setting)
         public void change2(){
+            finish();
             Intent sebuahIntent = new Intent(this,SettingActivity.class);
             startActivity(sebuahIntent);
         }
@@ -160,6 +163,26 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }
 
 }
 

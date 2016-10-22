@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,18 +79,21 @@ public class History extends AppCompatActivity {
 
     @OnClick(R.id.pemesanan)
     public void change(){
+        finish();
         Intent sebuahIntent = new Intent(this,Main2Activity.class);
         startActivity(sebuahIntent);
     }
 
     @OnClick(R.id.setting)
     public void change2(){
+        finish();
         Intent sebuahIntent = new Intent(this,SettingActivity.class);
         startActivity(sebuahIntent);
     }
 
     @OnClick(R.id.completed)
     public void completed(){
+        finish();
         Intent sebuahIntent = new Intent(this,HistoryCompletedActivity.class);
         startActivity(sebuahIntent);
     }
@@ -256,6 +261,27 @@ public class History extends AppCompatActivity {
             }
         }
 
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 }
