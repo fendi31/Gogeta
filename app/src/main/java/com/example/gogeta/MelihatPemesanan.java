@@ -43,33 +43,25 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.example.gogeta.R.id.jsonParsed;
 import static com.example.gogeta.R.layout.activity_main2;
 import static com.example.gogeta.R.layout.activity_melihat_pemesanan;
 
 
 public class MelihatPemesanan extends AppCompatActivity {
     private Spinner spinner1;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     //private GoogleApiClient client;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        String pemesan = "";
-        String nomortelepon = "";
-        String jenjang = "";
-        String kelas = "";
-        String pelajaran = "";
-        String topik = "";
-        String durasi = "";
-        String catatan = "";
-        String harga = "";
 
         // WebServer Request URL
-        String serverURL = "http://androidexample.com/media/webservice/JsonReturn.php";
+        String serverURL = "http://192.168.43.91:8080/pemesanan/guru";
 
         // Use AsyncTask execute Method To Prevent ANR Problem
         new LongOperation().execute(serverURL);
@@ -83,60 +75,64 @@ public class MelihatPemesanan extends AppCompatActivity {
         //listView.setAdapter(adapter);
 
 
-
     }
 
-        @Bind(R.id.history)
-        Button hist;
-        @Bind(R.id.setting)
-        Button sett;
+    @Bind(R.id.history)
+    Button hist;
+    @Bind(R.id.setting)
+    Button sett;
+    @Bind(R.id.jsonParsed)
+    TextView jsonParsedText;
 
-        @OnClick(R.id.history)
-        public void change () {
-            Intent sebuahIntent = new Intent(this, History.class);
-            startActivity(sebuahIntent);
-        }
+    @OnClick(R.id.history)
+    public void change() {
+        Intent sebuahIntent = new Intent(this, History.class);
+        startActivity(sebuahIntent);
+    }
 
 
-        @OnClick(R.id.setting)
-        public void change2 () {
-            Intent sebuahIntent = new Intent(this, SettingActivity.class);
-            startActivity(sebuahIntent);
-        }
+    @OnClick(R.id.setting)
+    public void change2() {
+        Intent sebuahIntent = new Intent(this, SettingActivity.class);
+        startActivity(sebuahIntent);
+    }
+
     // Class with extends AsyncTask class
-    private class LongOperation  extends AsyncTask<String, Void, Void> {
+    private class LongOperation extends AsyncTask<String, Void, Void> {
 
         // Required initialization
 
         private String Content;
         private String Error = null;
         private ProgressDialog Dialog = new ProgressDialog(MelihatPemesanan.this);
-        String data ="";
+        String data = "";
+        //TextView uiUpdate = (TextView) findViewById(R.id.output);
+        //TextView jsonParsed = (TextView) findViewById(R.id.jsonParsed);
 
-        TextView jsonParsed = (TextView) findViewById(R.id.jsonParsed);
-
-
-
-        protected void onPreExecute() {
-            // NOTE: You can call UI Element here.
-
-            //Start Progress Dialog (Message)
-
-            Dialog.setMessage("Please wait..");
-            Dialog.show();
+        int sizeData = 0;
+        //EditText serverText = (EditText) findViewById(R.id.serverText);
 
 
-        }
+//        protected void onPreExecute() {
+//            // NOTE: You can call UI Element here.
+//
+//            //Start Progress Dialog (Message)
+//
+//            Dialog.setMessage("Please wait..");
+//            Dialog.show();
+//
+//
+//
+//        }
 
         // Call after onPreExecute method
         protected Void doInBackground(String... urls) {
 
             /************ Make Post Call To Web Server ***********/
-            BufferedReader reader=null;
+            BufferedReader reader = null;
 
             // Send data
-            try
-            {
+            try {
 
                 // Defined URL  where to send data
                 URL url = new URL(urls[0]);
@@ -146,7 +142,7 @@ public class MelihatPemesanan extends AppCompatActivity {
                 URLConnection conn = url.openConnection();
                 conn.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
+                wr.write(data);
                 wr.flush();
 
                 // Get the server response
@@ -156,28 +152,21 @@ public class MelihatPemesanan extends AppCompatActivity {
                 String line = null;
 
                 // Read Server Response
-                while((line = reader.readLine()) != null)
-                {
+                while ((line = reader.readLine()) != null) {
                     // Append server response in string
                     sb.append(line + "\n");
                 }
 
                 // Append Server Response To Content String
                 Content = sb.toString();
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 Error = ex.getMessage();
-            }
-            finally
-            {
-                try
-                {
+            } finally {
+                try {
 
                     reader.close();
+                } catch (Exception ex) {
                 }
-
-                catch(Exception ex) {}
             }
 
             /*****************************************************/
@@ -191,11 +180,13 @@ public class MelihatPemesanan extends AppCompatActivity {
             Dialog.dismiss();
 
             if (Error != null) {
-
-
+                jsonParsedText.setText(Error);
+          //      uiUpdate.setText("Output : " + Error);
+            ;
             } else {
 
                 // Show Response Json On Screen (activity)
+             //   uiUpdate.setText(Content);
 
                 /****************** Start Parse Response JSON Data *************/
 
@@ -215,28 +206,38 @@ public class MelihatPemesanan extends AppCompatActivity {
 
                     int lengthJsonArr = jsonMainNode.length();
 
-                    for(int i=0; i < lengthJsonArr; i++)
-                    {
+                    for (int i = 0; i < lengthJsonArr; i++) {
                         /****** Get Object for each JSON node.***********/
                         JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
 
                         /******* Fetch node values **********/
-                        String name       = jsonChildNode.optString("name").toString();
-                        String number     = jsonChildNode.optString("number").toString();
-                        String date_added = jsonChildNode.optString("date_added").toString();
+                        String pemesan = jsonChildNode.optString("siswa").toString();
+                        String nomortelepon = "";
+                        String jenjang = jsonChildNode.optString("tingkat").toString();
+                        String kelas = jsonChildNode.optString("kelas").toString();
+                        String pelajaran = jsonChildNode.optString("pelajaran").toString();
+                        String topik = jsonChildNode.optString("topik").toString();
+                        String durasi = jsonChildNode.optString("durasi").toString();
+                        String catatan = jsonChildNode.optString("catatan").toString();
+                        String harga = jsonChildNode.optString("harga").toString();
 
 
-                        OutputData += " Name 		    : "+ name +" \n "
-                                + "Number 		: "+ number +" \n "
-                                + "Time 				: "+ date_added +" \n "
-                                +"--------------------------------------------------\n";
+                        OutputData += " Pemesan 		    : " + pemesan+ " \n "
+                                + "Jenjang 		: " + jenjang+ " \n "
+                                + "Kelas 				: " + kelas + " \n "
+                                + "Pelajaran				: " + pelajaran+ " \n "
+                                + "Topik				: " + topik+ " \n "
+                                + "Durasi				: " + durasi+ " \n "
+                                + "Catatan				: " + catatan+ " \n "
+                                + "Harga				: " + harga + " \n "
+                                + "--------------------------------------------------\n";
 
                         //Log.i("JSON parse", song_name);
                     }
                     /****************** End Parse Response JSON Data *************/
 
                     //Show Parsed Output on screen (activity)
-                    jsonParsed.setText( OutputData );
+                    jsonParsedText.setText(OutputData);
 
 
                 } catch (JSONException e) {
@@ -249,9 +250,4 @@ public class MelihatPemesanan extends AppCompatActivity {
         }
 
     }
-
 }
-
-
-
-
