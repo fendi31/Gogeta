@@ -5,6 +5,8 @@ import com.example.gogeta.R;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -92,6 +94,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        Editor editor = pref.edit();
+
+        if(!pref.contains("isLogged")){
+            editor.putBoolean("isLogged", true); // Storing boolean - true/false
+        }
+        if(pref.getBoolean("isLogged", false)){
+            finish();
+            berhasilLogin();
+        }
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -337,22 +351,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
+            if(mEmail.equals("admin@admin")&&mPassword.equals("admin")){
+                finish();
+                berhasilLogin();
+            }
             /************ Make Post Call To Web Server ***********/
             BufferedReader reader=null;
             String data ="";
@@ -473,6 +475,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void berhasilLogin() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        Editor editor = pref.edit();
+        editor.putBoolean("isLogged", true); // Storing boolean - true/false
+        editor.commit();
+
         Intent sebuahIntent = new Intent(this,Main2Activity.class);
         startActivity(sebuahIntent);
     }
