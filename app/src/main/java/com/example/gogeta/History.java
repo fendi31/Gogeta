@@ -56,7 +56,7 @@ public class History extends AppCompatActivity {
 
     @OnClick(R.id.setting)
     public void change2(){
-        Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
+        Intent sebuahIntent = new Intent(this,SettingActivity.class);
         startActivity(sebuahIntent);
     }
 
