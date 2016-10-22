@@ -43,7 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.gogeta.R.id.jsonParsed;
+//import static com.example.gogeta.R.id.jsonParsed;
 import static com.example.gogeta.R.layout.activity_main2;
 import static com.example.gogeta.R.layout.activity_melihat_pemesanan;
 
@@ -61,7 +61,7 @@ public class MelihatPemesanan extends AppCompatActivity {
 
 
         // WebServer Request URL
-        String serverURL = "http://192.168.43.91:8080/pemesanan/guru";
+        String serverURL = "http://192.168.137.211:8080/pemesanan/guru";
 
         // Use AsyncTask execute Method To Prevent ANR Problem
         new LongOperation().execute(serverURL);
@@ -69,10 +69,10 @@ public class MelihatPemesanan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(activity_melihat_pemesanan);
         ButterKnife.bind(this);
-        //String[] StringArray = {"Pemesanan oleh : ", "Nomor Telepon: ", "Jenjang: ", "Kelas: ", "Pelajaran: ","Topik: ","Durasi: ", "Catatan: ", "Harga: "};
-        //ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.item_list,StringArray);
-        //ListView listView = (ListView) findViewById(R.id.pemesanannya);
-        //listView.setAdapter(adapter);
+//        String[] StringArray = {"Pemesanan oleh : ", "Nomor Telepon: ", "Jenjang: ", "Kelas: ", "Pelajaran: ","Topik: ","Durasi: ", "Catatan: ", "Harga: "};
+//        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.item_list,StringArray);
+//        ListView listView = (ListView) findViewById(R.id.pemesanannya);
+//        listView.setAdapter(adapter);
 
 
     }
@@ -81,8 +81,8 @@ public class MelihatPemesanan extends AppCompatActivity {
     Button hist;
     @Bind(R.id.setting)
     Button sett;
-    @Bind(R.id.jsonParsed)
-    TextView jsonParsedText;
+  //  @Bind(R.id.jsonParsed)
+   // TextView jsonParsedText;
 
     @OnClick(R.id.history)
     public void change() {
@@ -180,7 +180,7 @@ public class MelihatPemesanan extends AppCompatActivity {
             Dialog.dismiss();
 
             if (Error != null) {
-                jsonParsedText.setText(Error);
+//                jsonParsedText.setText(Error);
           //      uiUpdate.setText("Output : " + Error);
             ;
             } else {
@@ -206,6 +206,9 @@ public class MelihatPemesanan extends AppCompatActivity {
 
                     int lengthJsonArr = jsonMainNode.length();
 
+                    String[] something = new String[lengthJsonArr];
+
+
                     for (int i = 0; i < lengthJsonArr; i++) {
                         /****** Get Object for each JSON node.***********/
                         JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
@@ -221,7 +224,7 @@ public class MelihatPemesanan extends AppCompatActivity {
                         String catatan = jsonChildNode.optString("catatan").toString();
                         String harga = jsonChildNode.optString("harga").toString();
 
-
+                        OutputData = "";
                         OutputData += " Pemesan 		    : " + pemesan+ " \n "
                                 + "Jenjang 		: " + jenjang+ " \n "
                                 + "Kelas 				: " + kelas + " \n "
@@ -230,14 +233,21 @@ public class MelihatPemesanan extends AppCompatActivity {
                                 + "Durasi				: " + durasi+ " \n "
                                 + "Catatan				: " + catatan+ " \n "
                                 + "Harga				: " + harga + " \n "
-                                + "--------------------------------------------------\n";
+                                ;
+ //                               + "--------------------------------------------------\n";
 
+                       something[i] = OutputData;
                         //Log.i("JSON parse", song_name);
                     }
                     /****************** End Parse Response JSON Data *************/
 
+
                     //Show Parsed Output on screen (activity)
-                    jsonParsedText.setText(OutputData);
+                    //jsonParsedText.setText(OutputData);
+//
+                    ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.item_list,something);
+                    ListView listView = (ListView) findViewById(R.id.pemesanannya);
+                    listView.setAdapter(adapter);
 
 
                 } catch (JSONException e) {
