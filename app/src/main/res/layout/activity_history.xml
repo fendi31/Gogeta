@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/logo"
             android:layout_centerInParent="true"
-            />
+            android:paddingTop="15dp" />
 
     </RelativeLayout>
 
@@ -40,7 +40,8 @@
             android:background="@color/background_splash"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_width="wrap_content" />
+            android:layout_width="wrap_content"
+            android:textStyle="normal|bold" />
         <Button android:id="@+id/setting"
             android:text="Setting"
             android:textColor="@color/putih"
@@ -70,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="@color/common_plus_signin_btn_text_light_disabled"
                 android:text="Completed"
                 />
         </LinearLayout>

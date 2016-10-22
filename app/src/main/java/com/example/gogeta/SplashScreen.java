@@ -2,6 +2,7 @@ package com.example.gogeta;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -30,5 +31,10 @@ public class SplashScreen extends Activity {
                 SplashScreen.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("hostURL", "192.168.43.72:8080"); // Storing boolean - true/false
+        editor.commit();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.gogeta;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,22 +9,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,68 +22,74 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 import butterknife.Bind;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-//import static com.example.gogeta.R.id.jsonParsed;
-import static com.example.gogeta.R.layout.activity_main2;
+import static com.example.gogeta.R.layout.activity_history;
+import static com.example.gogeta.R.layout.activity_history_completed;
 import static com.example.gogeta.R.layout.activity_melihat_pemesanan;
 
 
-public class MelihatPemesanan extends AppCompatActivity {
-    private Spinner spinner1;
+public class HistoryCompletedActivity extends AppCompatActivity {
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    //private GoogleApiClient client;
+    String hostURL = "";
+    String roleUser = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-        String hostURL = pref.getString("hostURL", "");
-        // WebServer Request URL
-        String serverURL = "http://"+hostURL+"/pemesanan/guru";
+        hostURL = pref.getString("hostURL", "");
+        String emailUser = pref.getString("emailUser", "");
+
+        String serverURL = "";
+        if(roleUser.equals("siswa")){
+            serverURL = "http://"+hostURL+"/pemesanan/userDone?email="+emailUser;
+        }
+        else{
+            serverURL = "http://"+hostURL+"/pemesanan/guruDone?email="+emailUser;
+        }
 
         // Use AsyncTask execute Method To Prevent ANR Problem
-        new LongOperation().execute(serverURL);
+        new HistoryCompletedActivity.LongOperation().execute(serverURL);
+
 
         super.onCreate(savedInstanceState);
-        setContentView(activity_melihat_pemesanan);
+        setContentView(activity_history_completed);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //       setSupportActionBar(toolbar);
         ButterKnife.bind(this);
-//        String[] StringArray = {"Pemesanan oleh : ", "Nomor Telepon: ", "Jenjang: ", "Kelas: ", "Pelajaran: ","Topik: ","Durasi: ", "Catatan: ", "Harga: "};
-//        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.item_list,StringArray);
-//        ListView listView = (ListView) findViewById(R.id.pemesanannya);
-//        listView.setAdapter(adapter);
 
 
-    }
+    };
+    @Bind(R.id.pemesanan)
+    Button pesan;
 
-    @Bind(R.id.history)
-    Button hist;
     @Bind(R.id.setting)
     Button sett;
-  //  @Bind(R.id.jsonParsed)
-   // TextView jsonParsedText;
 
-    @OnClick(R.id.history)
-    public void change() {
-        Intent sebuahIntent = new Intent(this, History.class);
+    @Bind(R.id.inprogress)
+    Button completed;
+
+    @OnClick(R.id.pemesanan)
+    public void change(){
+        Intent sebuahIntent = new Intent(this,Main2Activity.class);
         startActivity(sebuahIntent);
     }
 
-
     @OnClick(R.id.setting)
-    public void change2() {
-        Intent sebuahIntent = new Intent(this, SettingActivity.class);
+    public void change2(){
+        Intent sebuahIntent = new Intent(this,SettingActivity.class);
+        startActivity(sebuahIntent);
+    }
+
+    @OnClick(R.id.inprogress)
+    public void inprogress(){
+        Intent sebuahIntent = new Intent(this,History.class);
         startActivity(sebuahIntent);
     }
 
@@ -106,7 +100,7 @@ public class MelihatPemesanan extends AppCompatActivity {
 
         private String Content;
         private String Error = null;
-        private ProgressDialog Dialog = new ProgressDialog(MelihatPemesanan.this);
+        private ProgressDialog Dialog = new ProgressDialog(HistoryCompletedActivity.this);
         String data = "";
         //TextView uiUpdate = (TextView) findViewById(R.id.output);
         //TextView jsonParsed = (TextView) findViewById(R.id.jsonParsed);
@@ -183,12 +177,12 @@ public class MelihatPemesanan extends AppCompatActivity {
 
             if (Error != null) {
 //                jsonParsedText.setText(Error);
-          //      uiUpdate.setText("Output : " + Error);
-            ;
+                //      uiUpdate.setText("Output : " + Error);
+                ;
             } else {
 
                 // Show Response Json On Screen (activity)
-             //   uiUpdate.setText(Content);
+                //   uiUpdate.setText(Content);
 
                 /****************** Start Parse Response JSON Data *************/
 
@@ -217,28 +211,31 @@ public class MelihatPemesanan extends AppCompatActivity {
 
                         /******* Fetch node values **********/
                         String pemesan = jsonChildNode.optString("siswa").toString();
-                        String nomortelepon = "";
-                        String jenjang = jsonChildNode.optString("tingkat").toString();
+                        String guru = jsonChildNode.optString("guru").toString();
+                        String waktu = jsonChildNode.optString("waktu").toString();
+                        String tingkat = jsonChildNode.optString("tingkat").toString();
                         String kelas = jsonChildNode.optString("kelas").toString();
                         String pelajaran = jsonChildNode.optString("pelajaran").toString();
                         String topik = jsonChildNode.optString("topik").toString();
                         String durasi = jsonChildNode.optString("durasi").toString();
-                        String catatan = jsonChildNode.optString("catatan").toString();
                         String harga = jsonChildNode.optString("harga").toString();
+                        String rating = jsonChildNode.optString("rating").toString();
 
                         OutputData = "";
-                        OutputData += " Pemesan 		    : " + pemesan+ " \n "
-                                + "Jenjang 		: " + jenjang+ " \n "
-                                + "Kelas 				: " + kelas + " \n "
-                                + "Pelajaran				: " + pelajaran+ " \n "
-                                + "Topik				: " + topik+ " \n "
-                                + "Durasi				: " + durasi+ " \n "
-                                + "Catatan				: " + catatan+ " \n "
-                                + "Harga				: " + harga + " \n "
-                                ;
- //                               + "--------------------------------------------------\n";
+                        OutputData += " Siswa 		        : " + pemesan + " \n "
+                                    + "Guru          		: " + guru + " \n "
+                                    + "Waktu 				: " + waktu + " \n "
+                                    + "Tingkat				: " + tingkat + " \n "
+                                    + "Kelas				: " + kelas+ " \n "
+                                    + "Pelajaran			: " + pelajaran + " \n "
+                                    + "Topik				: " + topik + " \n "
+                                    + "Durasi				: " + durasi + " \n "
+                                    + "Harga				: " + harga + " \n "
+                                    + "Rating				: " + rating + " \n "
+                        ;
+                        //                               + "--------------------------------------------------\n";
 
-                       something[i] = OutputData;
+                        something[i] = OutputData;
                         //Log.i("JSON parse", song_name);
                     }
                     /****************** End Parse Response JSON Data *************/
@@ -248,7 +245,7 @@ public class MelihatPemesanan extends AppCompatActivity {
                     //jsonParsedText.setText(OutputData);
 //
                     ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.item_list,something);
-                    ListView listView = (ListView) findViewById(R.id.pemesanannya);
+                    ListView listView = (ListView) findViewById(R.id.history_progress);
                     listView.setAdapter(adapter);
 
 
@@ -262,4 +259,5 @@ public class MelihatPemesanan extends AppCompatActivity {
         }
 
     }
+
 }

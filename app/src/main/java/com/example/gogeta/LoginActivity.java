@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     String roleUser = "";
     String emailUser = "";
+    String hostURL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         Editor editor = pref.edit();
+        hostURL = pref.getString("hostURL", "");
 
         if(!pref.contains("isLogged")){
             editor.putBoolean("isLogged", true); // Storing boolean - true/false
@@ -365,8 +367,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Send data
             try
             {
-                String host = "10.5.93.73:8080";
-                String urlString = "http://"+host+"/user/check?email="+mEmail+"&password="+mPassword;
+//                String host = "10.5.93.73:8080";
+                String urlString = "http://"+hostURL+"/user/check?email="+mEmail+"&password="+mPassword;
                 // Defined URL  where to send data
                 URL url = new URL(urlString);
 

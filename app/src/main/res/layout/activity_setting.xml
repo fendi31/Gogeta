@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/logo"
             android:layout_centerInParent="true"
-            />
+            android:paddingTop="15dp" />
 
     </RelativeLayout>
 
@@ -46,20 +46,29 @@
             android:background="@color/background_splash"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_width="wrap_content" />
+            android:layout_width="wrap_content"
+            android:textStyle="normal|bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:background="@color/putih">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="icon"/>
+                app:srcCompat="@drawable/ic_person_blue_24px"
+                android:id="@+id/imageView6"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp" />
+
             <Button android:id="@+id/profiles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,16 +76,25 @@
                 android:text="Profile"
                 android:textColor="@color/black"
                 android:layout_marginBottom="2dp"
-                />
+                android:textAlignment="textStart"
+                android:paddingStart="15dp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
+            android:layout_height="wrap_content"
+            android:background="@color/putih">
+
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="icon"/>
+                app:srcCompat="@drawable/ic_power_settings_new_blue_24px"
+                android:id="@+id/imageView7"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/putih" />
+
             <Button android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +102,9 @@
                 android:text="Logout"
                 android:textColor="@color/black"
                 android:layout_marginBottom="1dp"
-                />
+                android:textAlignment="textStart"
+                android:paddingStart="15dp" />
+
         </LinearLayout>
     </LinearLayout>
 

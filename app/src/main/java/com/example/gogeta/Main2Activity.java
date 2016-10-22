@@ -129,8 +129,10 @@ public class Main2Activity extends AppCompatActivity {
 
         // Send data
         try {
-            String host = "10.5.95.161";
-            String urlString = "http://" + host + "/tekmob/?jenjang=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  + "&harga=" + harga;
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            String hostURL = pref.getString("hostURL", "");
+//            String host = "10.5.95.161";
+            String urlString = "http://" + hostURL + "/tekmob/?jenjang=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  + "&harga=" + harga;
             // Defined URL  where to send data
             URL url = new URL(urlString);
 
