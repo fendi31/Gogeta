@@ -134,8 +134,10 @@ public class Main2Activity extends AppCompatActivity {
         try {
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             String hostURL = pref.getString("hostURL", "");
+            String emailUser = pref.getString("emailUser", "");
+
 //            String host = "10.5.95.161";
-            String urlString = "http://" + hostURL + "/tekmob/?jenjang=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  + "&harga=" + harga;
+            String urlString = "http://" + hostURL + "/pemesanan/add/?siswa=" + emailUser + "&tingkat=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  ;
             // Defined URL  where to send data
             URL url = new URL(urlString);
 
