@@ -1,21 +1,29 @@
 package com.example.gogeta;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -42,51 +50,47 @@ public class Main2Activity extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-//        Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
-//        startActivity(sebuahIntent);
+
         if(pref.getString("roleUser", "").equals("guru")){
             finish();
             Intent sebuahIntent = new Intent(this,MelihatPemesanan.class);
             startActivity(sebuahIntent);
         }
 
+
+        final String hostURL = pref.getString("hostURL", "");
+        final String emailUser = pref.getString("emailUser", "");
+
+
+
+        Button mSubmitButton = (Button) findViewById(R.id.tombolsubmit);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Spinner jenjangSpinner = (Spinner)findViewById(R.id.spinner1);
+                String jenjang = jenjangSpinner.getSelectedItem().toString();
+                Spinner kelasSpinner = (Spinner)findViewById(R.id.spinner1b);
+                String kelas = kelasSpinner.getSelectedItem().toString();
+                Spinner pelajaranSpinner = (Spinner)findViewById(R.id.spinner2);
+                String pelajaran = pelajaranSpinner.getSelectedItem().toString();
+                EditText topikEdit = (EditText)findViewById(R.id.edittetx3);
+                String topik = topikEdit.getText().toString();
+                Spinner durasiSpinner = (Spinner)findViewById(R.id.spinner4);
+                String durasi = durasiSpinner.getSelectedItem().toString();
+                EditText catatanEdit = (EditText)findViewById(R.id.edittext5);
+                String catatan = catatanEdit.getText().toString();
+
+                //            String host = "10.5.95.161";
+                final String urlString = "http://" + hostURL + "/pemesanan/add?siswa=" + emailUser + "&tingkat=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  ;
+
+                // Use AsyncTask execute Method To Prevent ANR Problem
+                new Main2Activity.LongOperation().execute(urlString);
+            }
+        });
         ButterKnife.bind(this);
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
 
     };
-
-        @Bind(R.id.history)
-        Button hist;
-        @Bind(R.id.setting)
-        Button sett;
-        @Bind(R.id.tombolsubmit)
-        Button subm;
-        @Bind(R.id.test)
-        TextView test;
-        @Bind(R.id.spinner1)
-        Spinner spinner1atext;
-        @Bind(R.id.spinner1b)
-        Spinner spinner1btext;
-        @Bind(R.id.spinner2)
-        Spinner spinner2text;
-        @Bind(R.id.edittetx3)
-        EditText edittext3text;
-        @Bind(R.id.spinner4)
-        Spinner spinner4text;
-        @Bind(R.id.edittext5)
-        EditText edittext5text;
-        @Bind(R.id.edittext6)
-        EditText edittext6text;
-
-
-        String jenjang;
-        String kelas;
-        String pelajaran;
-        String topik;
-        String durasi;
-        String catatan;
-        String harga;
-
 
     @OnClick(R.id.history)
         public void change(){
@@ -114,55 +118,167 @@ public class Main2Activity extends AppCompatActivity {
 **/
 
 
-    @OnClick(R.id.tombolsubmit)
-    public void submit() {
+    // Class with extends AsyncTask class
+    private class LongOperation extends AsyncTask<String, Void, Void> {
 
+        // Required initialization
 
-        jenjang = spinner1atext.getSelectedItem().toString();
-        kelas = spinner1btext.getSelectedItem().toString();
-        pelajaran = spinner2text.getSelectedItem().toString();
-        topik = edittext3text.getText().toString();
-        durasi = spinner4text.getSelectedItem().toString();
-        catatan = edittext5text.getText().toString();
-        harga = edittext6text.getText().toString();
-
-        BufferedReader reader = null;
+        private String Content;
+        private String Error = null;
+        private ProgressDialog Dialog = new ProgressDialog(Main2Activity.this);
         String data = "";
-        String Content;
+        //TextView uiUpdate = (TextView) findViewById(R.id.output);
+        //TextView jsonParsed = (TextView) findViewById(R.id.jsonParsed);
 
-        // Send data
-        try {
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
-            String hostURL = pref.getString("hostURL", "");
-            String emailUser = pref.getString("emailUser", "");
-
-//            String host = "10.5.95.161";
-            String urlString = "http://" + hostURL + "/pemesanan/add/?siswa=" + emailUser + "&tingkat=" + jenjang + "&kelas=" + kelas  + "&pelajaran=" + pelajaran + "&topik=" + topik + "&durasi=" + durasi + "&catatan=" + catatan  ;
-            // Defined URL  where to send data
-            URL url = new URL(urlString);
-
-            // Send POST data request
-
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
-            wr.flush();
+        int sizeData = 0;
+        //EditText serverText = (EditText) findViewById(R.id.serverText);
 
 
-        } catch (Exception ex) {
-            return ;
-        } finally {
+//        protected void onPreExecute() {
+//            // NOTE: You can call UI Element here.
+//
+//            //Start Progress Dialog (Message)
+//
+//            Dialog.setMessage("Please wait..");
+//            Dialog.show();
+//
+//
+//
+//        }
+
+        // Call after onPreExecute method
+        protected Void doInBackground(String... urls) {
+
+            /************ Make Post Call To Web Server ***********/
+            BufferedReader reader = null;
+
+            // Send data
             try {
 
-                reader.close();
+                // Defined URL  where to send data
+                URL url = new URL(urls[0]);
+
+                // Send POST data request
+
+                URLConnection conn = url.openConnection();
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+                Log.d("MASUK", url.toString());
+                // Get the server response
+
+                reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line + "\n");
+                }
+
+                // Append Server Response To Content String
+                Content = sb.toString();
             } catch (Exception ex) {
+                Error = ex.getMessage();
+            } finally {
+                try {
+
+                    reader.close();
+                } catch (Exception ex) {
+                }
             }
+
+            /*****************************************************/
+            return null;
         }
 
+        protected void onPostExecute(Void unused) {
+            // NOTE: You can call UI Element here.
+
+            // Close progress dialog
+            Dialog.dismiss();
+
+            if (Error != null) {
+//                jsonParsedText.setText(Error);
+                //      uiUpdate.setText("Output : " + Error);
+                ;
+            } else {
+
+                // Show Response Json On Screen (activity)
+                //   uiUpdate.setText(Content);
+
+                /****************** Start Parse Response JSON Data *************/
+
+                String OutputData = "";
+                JSONObject jsonResponse;
+
+                try {
+
+                    /****** Creates a new JSONObject with name/value mappings from the JSON string. ********/
+                    jsonResponse = new JSONObject(Content);
+
+                    /***** Returns the value mapped by name if it exists and is a JSONArray. ***/
+                    /*******  Returns null otherwise.  *******/
+                    JSONArray jsonMainNode = jsonResponse.optJSONArray("Android");
+
+                    /*********** Process each JSON Node ************/
+
+                    int lengthJsonArr = jsonMainNode.length();
+
+                    String[] something = new String[lengthJsonArr];
 
 
+                    for (int i = 0; i < lengthJsonArr; i++) {
+                        /****** Get Object for each JSON node.***********/
+                        JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
 
+                        /******* Fetch node values **********/
+                        String pemesan = jsonChildNode.optString("siswa").toString();
+
+
+                        OutputData = "";
+                        OutputData += " Siswa 		        : " + pemesan + " \n "
+
+                        ;
+                        //                               + "--------------------------------------------------\n";
+
+//                        something[i] = OutputData;
+
+//                        TextView test = (TextView) findViewById(R.id.test);
+//                        test.setText(OutputData);
+                        berhasilSend();
+
+                        //Log.i("JSON parse", song_name);
+                    }
+                    /****************** End Parse Response JSON Data *************/
+
+
+                    //Show Parsed Output on screen (activity)
+                    //jsonParsedText.setText(OutputData);
+//
+//                    ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.item_list,something);
+//                    ListView listView = (ListView) findViewById(R.id.history_progress);
+//                    listView.setAdapter(adapter);
+
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+
+            }
+
+        }
+
+    }
+
+    public void berhasilSend(){
+        finish();
+        Intent sebuahIntent = new Intent(this,History.class);
+        startActivity(sebuahIntent);
     }
 
     boolean doubleBackToExitPressedOnce = false;

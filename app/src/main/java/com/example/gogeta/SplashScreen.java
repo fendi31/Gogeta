@@ -34,7 +34,7 @@ public class SplashScreen extends Activity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("hostURL", "192.168.43.72:8080"); // Storing boolean - true/false
+        editor.putString("hostURL", "10.5.94.209:8080"); // Storing boolean - true/false
         editor.commit();
     }
 }
